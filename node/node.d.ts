@@ -114,6 +114,7 @@ declare module NodeJS {
         write(buffer: Buffer, cb?: Function): boolean;
         write(str: string, cb?: Function): boolean;
         write(str: string, encoding?: string, cb?: Function): boolean;
+        write(data: any, cb?: Function): boolean;
         end(): void;
         end(buffer: Buffer, cb?: Function): void;
         end(str: string, cb?: Function): void;
@@ -1240,6 +1241,7 @@ declare module "stream" {
     export interface WritableOptions {
         highWaterMark?: number;
         decodeStrings?: boolean;
+        objectMode?: boolean;
     }
 
     export class Writable extends events.EventEmitter implements NodeJS.WritableStream {
@@ -1247,9 +1249,11 @@ declare module "stream" {
         constructor(opts?: WritableOptions);
         _write(data: Buffer, encoding: string, callback: Function): void;
         _write(data: string, encoding: string, callback: Function): void;
+        _write(data: any, encoding: string, callback: Function): void;
         write(buffer: Buffer, cb?: Function): boolean;
         write(str: string, cb?: Function): boolean;
         write(str: string, encoding?: string, cb?: Function): boolean;
+        write(data: any, cb?: Function): boolean;
         end(): void;
         end(buffer: Buffer, cb?: Function): void;
         end(str: string, cb?: Function): void;
@@ -1266,9 +1270,11 @@ declare module "stream" {
         constructor(opts?: DuplexOptions);
         _write(data: Buffer, encoding: string, callback: Function): void;
         _write(data: string, encoding: string, callback: Function): void;
+        _write(data: any, encoding: string, callback: Function): void;
         write(buffer: Buffer, cb?: Function): boolean;
         write(str: string, cb?: Function): boolean;
         write(str: string, encoding?: string, cb?: Function): boolean;
+        write(data: any, cb?: Function): boolean;
         end(): void;
         end(buffer: Buffer, cb?: Function): void;
         end(str: string, cb?: Function): void;
