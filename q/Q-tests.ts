@@ -61,9 +61,9 @@ Q.fcall(function () {
     .then(function () { })
     .then(function () { })
     .then(function (value4) {
-        // Do something with value4^M
+        // Do something with value4
     }, function (error) {
-        // Handle any error from step1 through step4^M
+        // Handle any error from step1 through step4
     }).done();
 
 Q.allResolved([])
