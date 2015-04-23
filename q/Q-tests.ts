@@ -52,6 +52,19 @@ Q.fcall(function () { })
     }, function (error) {
         // Handle any error from step1 through step4
     }).done();
+Q.fcall(function () {
+    var deferred = Q.defer();
+    deferred.resolve("foo");
+    return deferred.promise;
+ })
+    .then(function () { })
+    .then(function () { })
+    .then(function () { })
+    .then(function (value4) {
+        // Do something with value4
+    }, function (error) {
+        // Handle any error from step1 through step4
+    }).done();
 
 Q.allResolved([])
 .then(function (promises: Q.Promise<any>[]) {
@@ -184,5 +197,3 @@ module TestCanRethrowRejectedPromises {
     ;
 
 }
-
-
