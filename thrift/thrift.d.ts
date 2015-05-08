@@ -63,8 +63,25 @@ declare module ThriftJS {
         write(output: Object): void;
         getCode(): number;
     }
-}
+    export enum TProtocolExceptionType {
+        UNKNOWN = 0,
+        INVALID_DATA = 1,
+        NEGATIVE_SIZE = 2,
+        SIZE_LIMIT = 3,
+        BAD_VERSION = 4,
+        NOT_IMPLEMENTED = 5,
+        DEPTH_LIMIT = 6
+    }
+    export class TProtocolException implements Error {
+      name: string;
+      message: string;
+      type: TProtocolExceptionType;
 
+      constructor(type: TProtocolExceptionType, message: string);
+
+    }
+    export function objectLength(obj: any): number;
+}
 
 declare module "thrift" {
     import net = require("net");
@@ -84,13 +101,13 @@ declare module "thrift" {
         on(event: "error", listener: (err: any) => any): NodeJS.EventEmitter;
     }
     export interface ServerOptions {
-        transport?: TTransport;
-        protocol?: TProtocol;
+        transport?: { new (buffer: Buffer, callback: Function): TTransport; };
+        protocol?: { new (trans: TTransport): TProtocol; };
         tls?: any;//tls.TlsOptions;
     }
     export interface ClientOptions {
-        transport?: TTransport;
-        protocol?: TProtocol;
+        transport?: { new (buffer: Buffer, callback: Function): TTransport; };
+        protocol?: { new (trans: TTransport): TProtocol; };
         debug?: boolean;
         max_attempts?: number;
         retry_max_delay?: number;
@@ -173,14 +190,9 @@ declare module "thrift" {
         getTransport(): TTransport;
         skip(type: Thrift.Type): void;
     }
-    export interface TBufferedTransport extends TTransport {}
-    export interface TFramedTransport extends TTransport {}
-    export interface TBinaryProtocol extends TProtocol {}
-    export interface TJSONProtocol extends TProtocol {}
-    export interface TCompactProtocol extends TProtocol {}
-    export var TBufferedTransport: { new (buffer: Buffer, callback: Function): TBufferedTransport; };
-    export var TFramedTransport: { new (buffer: Buffer, callback: Function): TFramedTransport; };
-    export var TBinaryProtocol: { new (trans: TTransport, strictRead: boolean, strictWrite: boolean): TBinaryProtocol; };
-    export var TJSONProtocol: { new (trans: TTransport): TJSONProtocol; };
-    export var TCompactProtocol: { new (trans: TTransport): TCompactProtocol; };
+    export var TBufferedTransport: { new (buffer: Buffer, callback: Function): TTransport; };
+    export var TFramedTransport: { new (buffer: Buffer, callback: Function): TTransport; };
+    export var TBinaryProtocol: { new (trans: TTransport, strictRead?: boolean, strictWrite?: boolean): TProtocol; };
+    export var TJSONProtocol: { new (trans: TTransport): TProtocol; };
+    export var TCompactProtocol: { new (trans: TTransport): TProtocol; };
 }
