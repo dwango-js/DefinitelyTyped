@@ -83,7 +83,7 @@ declare module ExpressValidator {
 		/**
 		 * isNumeric accepts zero padded numbers, e.g. '001', isInt doesn't
 		 */
-		isInt(): Validator;
+		isInt(optional?: {min?: number; max?: number; }): Validator;
 		isLowercase(): Validator;
 		isUppercase(): Validator;
 		isDecimal(): Validator;
