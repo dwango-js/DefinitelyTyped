@@ -801,15 +801,27 @@ declare module "readline" {
 
 declare module "vm" {
     export interface Context { }
-    export interface Script {
-        runInThisContext(): void;
-        runInNewContext(sandbox?: Context): void;
+    export interface VMScriptOptions {
+        displayErrors?: boolean;
+        timeout?: number;
     }
-    export function runInThisContext(code: string, filename?: string): void;
-    export function runInNewContext(code: string, sandbox?: Context, filename?: string): void;
-    export function runInContext(code: string, context: Context, filename?: string): void;
+    export class Script {
+        constructor(code: string, options?: { filename?: string; displayErrors?: boolean; });
+        runInThisContext(options?: VMScriptOptions): any;
+        runInNewContext(sandbox?: Context, options?: VMScriptOptions): any;
+        runInContext(sandbox?: Context, options?: VMScriptOptions): any;
+    }
+    export interface VMOptions {
+        filename?: string;
+        displayErrors?: boolean;
+        timeout?: number;
+    }
+    export function runInThisContext(code: string, options?: VMOptions): any;
+    export function runInNewContext(code: string, sandbox?: Context, options?: VMOptions): any;
+    export function runInContext(code: string, context: Context, options?: VMOptions): any;
+    export function runInDebugContext(code: string): any;
     export function createContext(initSandbox?: Context): Context;
-    export function createScript(code: string, filename?: string): Script;
+    export function isContext(sandbox: Context): boolean;
 }
 
 declare module "child_process" {
